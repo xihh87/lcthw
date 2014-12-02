@@ -1,17 +1,18 @@
 #include <stdio.h>
 #include <ctype.h>
+#include <string.h>
 
 void print_letters(char arg[])
 {
 	int i = 0;
-	for(i = 0; arg[i] != '\0'; i++) {
-		char ch = arg[i];
+	for(i = 0; i < strlen(arg); i++) {
 
-		if(isalpha(ch) || isblank(ch)) {
+		char ch = arg[i];
+		if(isalpha(ch) || isblank(ch) ||
+			isdigit(ch) || ispunct(ch)) {
 			printf("'%c' == %d ", ch, ch);
 		}
 	}
-
 	printf("\n");
 }
 
