@@ -2,15 +2,11 @@
 
 int main(int argc, char *argv[])
 {
-	if(argc != 2) {
-		printf("ERROR: You need one argument.\n");
-		/* this is how you abort a program */
-		return 1;
-	}
+	int a;
+	for(a = 1; a < argc; a++) {
 
-	int i = 0;
-	for(i = 0; argv[1][i] != '\0'; i++) {
-		char letter = argv[1][i];
+	int i, letter;
+	for(i = 0; letter = argv[a][i], letter != '\0'; i++) {
 
 		switch(letter) {
 		case 'a':
@@ -49,6 +45,8 @@ int main(int argc, char *argv[])
 		default:
 			printf("%d: %c is not a vowel\n", i, letter);
 		}
+	}
+
 	}
 
 	return 0;
