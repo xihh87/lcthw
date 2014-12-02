@@ -8,8 +8,7 @@ void print_letters(char arg[])
 	for(i = 0; i < strlen(arg); i++) {
 
 		char ch = arg[i];
-		if(isalpha(ch) || isblank(ch) ||
-			isdigit(ch) || ispunct(ch)) {
+		if(isalnum(ch) || isblank(ch) || ispunct(ch)) {
 			printf("'%c' == %d ", ch, ch);
 		}
 	}
