@@ -7,8 +7,14 @@ int main(int argc, char *argv[])
 	char full_name[] = {
 		'Z', 'e', 'd',
 		' ', 'A', '.', ' ',
-		'S', 'h', 'a', 'w', '\0'
+		'S', 'h', 'a', 'w', 
 	};
+
+	areas[-1] = 100;
+	full_name[0] = 'N';
+	full_name[8] = 'n';
+	full_name[9] = 'o';
+	name[0] = 'R'; 
 
 	/* Warning: on some systems you may have to change the
 	 * %ld in this code to a %u since it will use unsigned ints */
@@ -19,6 +25,10 @@ int main(int argc, char *argv[])
 		sizeof(areas) / sizeof(int));
 	printf("The first area is %d, the 2nd %d.\n",
 		areas[0], areas[1]);
+
+	printf("The contents of areas (int[]): %d, %d, %d, %d, %d, %d\n",
+		areas[0], areas[1], areas[2], areas[3], areas[4],
+		areas[-1]);
 
 	printf("The size of a char: %ld\n", sizeof(char));
 	printf("The size of name (char[]): %ld\n",
