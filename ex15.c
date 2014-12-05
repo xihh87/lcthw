@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
 	/* first way using indexing */
 	int *cur_age = ages;
 	char **cur_name = names;
-	for (i = 0; i < count; i++) {
+	for (i = count - 1; i >= 0; i--) {
 		printf("%s has %d years alive.\n",
 			*(cur_name + i), *(cur_age + i));
 	}
