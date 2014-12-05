@@ -55,12 +55,11 @@ void print_names_ages_pointer_math(char **names, int *ages, int count)
 	char **cur_name = names;
 
 	/* fourth way with pointers in a stupid complex way */
-	for (cur_name = names, cur_age = ages;
-		(cur_age - ages) < count;
-		cur_name++, cur_age++)
+	while ((cur_age - ages) < count)
 	{
 		printf("%s lived %d years so far.\n",
 			*cur_name, *cur_age);
+		cur_name++, cur_age++;
 	}
 
 }
