@@ -4,9 +4,10 @@ void print_names_ages_array(char **names, int *ages, int count)
 {
 	/* first way using indexing */
 	int i = 0;
-	for (i = 0; i < count; i++) {
+	while (i < count) {
 		printf("%s has %d years alive.\n",
 			names[i], ages[i]);
+		i++;
 	}
 
 	printf("---\n");
@@ -21,9 +22,10 @@ void print_names_ages_pointer_start(char **names, int *ages, int count)
 
 	/* second say using pointers */
 	int i = 0;
-	for (i = 0; i < count; i++) {
+	while (i < count) {
 		printf("%s is %d years old.\n",
 			*(cur_name + i), *(cur_age + i));
+		i++;
 	}
 
 	printf("---\n");
@@ -37,9 +39,10 @@ void print_names_ages_pointer_array(char **names, int *ages, int count)
 
 	/* third way, pointers are just arrays */
 	int i = 0;
-	for (i = 0; i < count; i++) {
+	while (i < count) {
 		printf("%s is %d years old again.\n",
 			cur_name[i], cur_age[i]);
+		i++;
 	}
 
 	printf("---\n");
