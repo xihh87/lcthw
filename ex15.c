@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
 
 	printf("---\n");
 
-	/* third way, pinters are just arrays */
+	/* third way, pointers are just arrays */
 	for (i = 0; i < count; i++) {
 		printf("%s is %d years old again.\n",
 			cur_name[i], cur_age[i]);
