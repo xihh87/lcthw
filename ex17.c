@@ -15,7 +15,7 @@ struct Address {
 };
 
 struct Database {
-	struct Address *rows[MAX_ROWS];
+	struct Address rows[MAX_ROWS];
 };
 
 struct Connection {
@@ -36,7 +36,7 @@ void die(const char *message)
 
 void Address_print(struct Address *addr)
 {
-	printf("%d %s %s\n",
+	printf("id: %d\nname: %s\nemail: %s\n",
 		addr->id, addr->name, addr->email);
 }
 
@@ -50,6 +50,9 @@ struct Connection *Database_open(const char *filename, char mode)
 {
 	struct Connection *conn = malloc(sizeof(struct Connection));
 	if (!conn) die("Memory error");
+
+	conn->db = malloc(sizeof(struct Database));
+	if (!conn->db) die("Memory error");
 
 	if (mode == 'c') {
 		conn->file = fopen(filename, "w");
@@ -94,29 +97,31 @@ void Database_create(struct Connection *conn)
 		/* make a prototype to initialize it */
 		struct Address addr = {.id = i, .set = 0};
 		/* then just assign it */
-		conn->db->rows[i] = &addr;
+		conn->db->rows[i] = addr;
 	}
 }
 
 void Database_set(struct Connection *conn, int id,
 		const char *name, const char *email)
 {
-	struct Address *addr = conn->db->rows[id];
+	struct Address *addr = &conn->db->rows[id];
 	if (addr->set) die("Already set, delete it first");
 
 	addr->set = 1;
 	/* WARNING: bug, read the "How To Break It" and fix this */
 	char *res = strncpy(addr->name, name, MAX_DATA);
+	res[MAX_DATA - 1] = '\0';
 	/* demonstrate the strncpy bug */
 	if (!res) die("Name copy failed");
 
 	res = strncpy(addr->email, email, MAX_DATA);
+	res[MAX_DATA - 1] = '\0';
 	if (!res) die("Email copy failed");
 }
 
 void Database_get(struct Connection *conn, int id)
 {
-	struct Address *addr = conn->db->rows[id];
+	struct Address *addr = &conn->db->rows[id];
 
 	if (addr->set) {
 		Address_print(addr);
@@ -128,7 +133,7 @@ void Database_get(struct Connection *conn, int id)
 void Database_delete(struct Connection *conn, int id)
 {
 	struct Address addr = {.id = id, .set = 0};
-	conn->db->rows[id] = &addr;
+	conn->db->rows[id] = addr;
 }
 
 void Database_list(struct Connection *conn)
@@ -137,7 +142,7 @@ void Database_list(struct Connection *conn)
 	struct Database *db = conn->db;
 
 	for (i = 0; i < MAX_ROWS; i++) {
-		struct Address *cur = db->rows[i];
+		struct Address *cur = &db->rows[i];
 
 		if (cur->set) {
 			Address_print(cur);
@@ -155,7 +160,8 @@ int main(int argc, char *argv[])
 	int id = 0;
 
 	if (argc > 3) id = atoi(argv[3]);
-	if (id >= MAX_ROWS) die("There's not many records.");
+	if (id >= MAX_ROWS) die("There's not that many records.");
+
 
 	switch (action) {
 	case 'c':
@@ -193,4 +199,4 @@ int main(int argc, char *argv[])
 	Database_close(conn);
 
 	return 0;
-}	
+}
