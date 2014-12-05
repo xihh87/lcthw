@@ -46,5 +46,14 @@ int main(int argc, char *argv[])
 			names[i], ages[i]);
 	}
 
+	printf("---\n");
+
+	for (i = 0; i < count; i++)
+	{
+		printf("%s lived %d years so far.\nname is in %p, age is at %p\n",
+			names[i], ages[i],
+			&*(names + i), &*(ages + i));
+	}
+
 	return 0;
 }
