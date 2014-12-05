@@ -6,7 +6,7 @@ int main(int argc, char *argv[])
 	for(a = 1; a < argc; a++) {
 
 	int i, letter;
-	for(i = 0; letter = argv[a][i], letter != '\0'; i++) {
+	for(i = 0; letter = *(*(argv + a) + i), letter != '\0'; i++) {
 
 		switch(letter) {
 		case 'a':

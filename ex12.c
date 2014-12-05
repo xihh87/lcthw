@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
 		printf("Here are your arguments:\n");
 
 		for(i = 0; i < argc; i++) {
-			printf("%s ", argv[i]);
+			printf("%s ", *(argv + i));
 		}
 		printf("\n");
 	} else {

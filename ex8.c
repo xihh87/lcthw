@@ -23,12 +23,13 @@ int main(int argc, char *argv[])
 		sizeof(areas));
 	printf("The number of ints in areas: %ld\n",
 		sizeof(areas) / sizeof(int));
+	int *cur_area = areas;
 	printf("The first area is %d, the 2nd %d.\n",
-		areas[0], areas[1]);
+		*cur_area, *(cur_area + 1));
 
 	printf("The contents of areas (int[]): %d, %d, %d, %d, %d, %d\n",
-		areas[0], areas[1], areas[2], areas[3], areas[4],
-		areas[-1]);
+		*(cur_area + 0), *(cur_area + 1), *(cur_area + 2), *(cur_area + 3), *(cur_area + 4),
+		*(cur_area + -1));
 
 	printf("The size of a char: %ld\n", sizeof(char));
 	printf("The size of name (char[]): %ld\n",
