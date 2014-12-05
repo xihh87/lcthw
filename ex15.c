@@ -1,27 +1,65 @@
 #include <stdio.h>
-#include <assert.h>
 
-void print_names_ages(char *names[], int ages[],
-	int elem, const char *format)
+void print_names_ages_array(char **names, int *ages, int count)
 {
+	/* first way using indexing */
 	int i = 0;
-	for (i = 0; i < elem; i++) {
-		printf(format, names[i], ages[i]);
+	for (i = 0; i < count; i++) {
+		printf("%s has %d years alive.\n",
+			names[i], ages[i]);
+	}
+
+	printf("---\n");
+
+}
+
+void print_names_ages_pointer_start(char **names, int *ages, int count)
+{
+	/* setup the pointers to the start of the arrays */
+	int *cur_age = ages;
+	char **cur_name = names;
+
+	/* second say using pointers */
+	int i = 0;
+	for (i = 0; i < count; i++) {
+		printf("%s is %d years old.\n",
+			*(cur_name + i), *(cur_age + i));
 	}
 
 	printf("---\n");
 }
 
-void print_names_ages_addr(char **names, int *ages,
-	int elem, const char *format)
+void print_names_ages_pointer_array(char **names, int *ages, int count)
 {
+	/* setup the pointers to the start of the arrays */
+	int *cur_age = ages;
+	char **cur_name = names;
+
+	/* third way, pointers are just arrays */
 	int i = 0;
-	for (i = 0; i < elem; i++) {
-		printf(format, names[i], ages[i],
-			&names[i], &ages[i]);
+	for (i = 0; i < count; i++) {
+		printf("%s is %d years old again.\n",
+			cur_name[i], cur_age[i]);
 	}
 
 	printf("---\n");
+}
+
+void print_names_ages_pointer_math(char **names, int *ages, int count)
+{
+	/* setup the pointers to the start of the arrays */
+	int *cur_age = ages;
+	char **cur_name = names;
+
+	/* fourth way with pointers in a stupid complex way */
+	for (cur_name = names, cur_age = ages;
+		(cur_age - ages) < count;
+		cur_name++, cur_age++)
+	{
+		printf("%s lived %d years so far.\n",
+			*cur_name, *cur_age);
+	}
+
 }
 
 int main(int argc, char *argv[])
@@ -33,27 +71,13 @@ int main(int argc, char *argv[])
 		"Mary", "John", "Lisa",
 	};
 
-	const char *formats[] = {
-		"%s has %d years alive.\n",
-		"%s is %d years old.\n",
-		"%s is %d years old again.\n",
-		"%s lived %d years so far.\n",
-	};
+	/* safely get the sizes of ages */
+	int count = sizeof(ages) / sizeof(int);
 
-	int formats_cnt = sizeof(formats) / sizeof(formats[0]);
-	int ages_cnt = sizeof(ages) / sizeof(ages[0]);
-	int names_cnt = sizeof(names) / sizeof(names[0]);
+	print_names_ages_array(names, ages, count);
+	print_names_ages_pointer_start(names, ages, count);
+ 	print_names_ages_pointer_array(names, ages, count);
+	print_names_ages_pointer_math(names, ages, count);
 
-	assert(names_cnt == ages_cnt);
-	
-	int i = 0;
-	for (i = 0; i < formats_cnt; i++)
-	{
-		print_names_ages(names, ages, names_cnt, formats[i]);
-	}
-
-	print_names_ages_addr(names, ages, names_cnt,
-		"%s have lived %d years for now\nname: %p\nage: %p\n\n");
-	
 	return 0;
 }
