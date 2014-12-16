@@ -34,3 +34,5 @@ set -e
 echo "Delete a registry..."
 ex17 prueba1.db del 1
 
+rm prueba1.db
+popd
