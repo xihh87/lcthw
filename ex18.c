@@ -18,6 +18,7 @@ void die(const char *message)
 /* a typedf creates a fake type, in this
  * case for a function pointer */
 typedef int (*compare_cb)(int a, int b);
+typedef int *(*sort_cb)(int *numbers, int count, compare_cb cmp);
 
 /*
  * A classic buble sort function that uses the
@@ -70,10 +71,10 @@ int strange_order(int a, int b)
  * Used to test that we are sorting things correctly
  * by doing the sort and printing it out
  */
-void test_sorting(int *numbers, int count, compare_cb cmp)
+void test_sorting(int *numbers, int count, compare_cb cmp, sort_cb alg)
 {
 	int i = 0;
-	int *sorted = bubble_sort(numbers, count, cmp);
+	int *sorted = alg(numbers, count, cmp);
 
 	if (!sorted) die("Failed to sort as requested.");
 
@@ -83,6 +84,15 @@ void test_sorting(int *numbers, int count, compare_cb cmp)
 	printf("\n");
 
 	free(sorted);
+	
+	/* break exercise */
+	unsigned char *data = (unsigned char *)cmp;
+
+	for(i = 0; i < 25; i++) {
+    		printf("%02x:", data[i]);
+	}
+
+	printf("\n"); 
 }
 
 int main(int argc, char *argv[])
@@ -100,9 +110,9 @@ int main(int argc, char *argv[])
 		numbers[i] = atoi(inputs[i]);
 	}
 
-	test_sorting(numbers, count, sorted_order);
-	test_sorting(numbers, count, reverse_order);
-	test_sorting(numbers, count, strange_order);
+	test_sorting(numbers, count, sorted_order, bubble_sort);
+	test_sorting(numbers, count, reverse_order, bubble_sort);
+	test_sorting(numbers, count, strange_order, bubble_sort);
 
 	free(numbers);
 
