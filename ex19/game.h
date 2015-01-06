@@ -1,11 +1,6 @@
 int Monster_attack(void *self, int damage);
 int Monster_init(void *self);
 
-Object MonsterProto = {
-	.init = Monster_init,
-	.attack = Monster_attack,
-};
-
 struct Monster {
 	Object proto;
 	int hit_points;
@@ -13,9 +8,10 @@ struct Monster {
 
 typedef struct Monster Monster;
 
+Object MapProto;
 
 void *Room_move(void *self, Direction direction);
-int Room_atack(void *self, int damage);
+int Room_attack(void *self, int damage);
 int Room_init(void *self);
 
 struct Room {
@@ -31,6 +27,8 @@ struct Room {
 
 typedef struct Room Room;
 
+Object RoomProto;
+
 void *Map_move(void *self, Direction direction);
 int Map_attack(void *self, int damage);
 int Map_init(void *self);
@@ -41,13 +39,8 @@ struct Map {
 	Room *location;
 };
 
-Object MapProto = {
-	.init = Map_init,
-	.move = Map_move,
-	.attack = Map_attack,
-};
-
 typedef struct Map Map;
 
-int process_input(Map *game);
+Object MapProto;
 
+int process_input(Map *game);

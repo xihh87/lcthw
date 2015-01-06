@@ -27,6 +27,12 @@ int Monster_init(void *self)
 	return 1;
 }
 
+Object MonsterProto = {
+	.init = Monster_init,
+	.attack = Monster_attack,
+};
+
+
 void *Room_move(void *self, Direction direction)
 {
 	Room *room = self;
@@ -56,7 +62,6 @@ void *Room_move(void *self, Direction direction)
 	return next;
 }
 
-
 int Room_attack(void *self, int damage)
 {
 	Room *room = self;
@@ -70,6 +75,13 @@ int Room_attack(void *self, int damage)
 		return 0;
 	}
 }
+
+Object RoomProto = {
+	.init = Room_init,
+	.attack = Room_attack,
+};
+
+
 
 void *Map_move(void *self, Direction direction)
 {
@@ -93,6 +105,42 @@ int Map_attack(void *self, int damage)
 
 	return location->_(attack)(location, damage);
 }
+
+int Map_init(void *self)
+{
+	Map *map = self;
+	
+	// Make some rooms fo a small map
+	Room *hall = NEW(Room, "The great Hall");
+	Room *throne = NEW(Room, "The throne room");
+	Room *arena = NEW(Room, "The arena, with the minotaur");
+	Room *kitchen = NEW(Room, "Kitchen, you have the knife now");
+
+	// put the bad guy in the arena
+	arena->bad_guy = NEW(Monster, "The evil minotaur");
+
+	// setup the map rooms
+	hall->north = throne;
+
+	throne->west = arena;
+	throne->east = kitchen;
+	throne->south = hall;
+
+	arena->east = throne;
+	kitchen->west = throne;
+
+	// start the map and the character off in the hall
+	map->start = hall;
+	map->location = hall;
+
+	return 1;
+}
+
+Object MapProto = {
+	.init = Map_init,
+	.move = Map_move,
+	.attack = Map_attack,
+};
 
 int process_input(Map *game)
 {
