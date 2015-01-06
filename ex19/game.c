@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <errno.h>
 #include "object.h"
 #include "game.h"
 
