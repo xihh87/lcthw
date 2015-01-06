@@ -13,6 +13,7 @@ Object MapProto;
 void *Room_move(void *self, Direction direction);
 int Room_attack(void *self, int damage);
 int Room_init(void *self);
+typedef int (*init_cb)(void *self);
 
 struct Room {
 	Object proto;

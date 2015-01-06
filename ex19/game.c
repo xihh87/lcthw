@@ -77,7 +77,7 @@ int Room_attack(void *self, int damage)
 }
 
 Object RoomProto = {
-	.init = Room_init,
+	.move = Room_move,
 	.attack = Room_attack,
 };
 
