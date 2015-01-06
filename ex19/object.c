@@ -2,7 +2,17 @@
 #include <string.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <errno.h>
 #include "object.h"
+
+void die(const char *message)
+{
+	if (errno) {
+		perror(message);
+	} else {
+		printf("%s\n", message);
+	}
+}
 
 void Object_destroy(void *self)
 {
@@ -51,9 +61,12 @@ void *Object_new(size_t size, Object proto, char *description)
 	 * then point a different pointer at it to "cast" it */
 	Object *el = calloc(1, size);
 	*el = proto;
+	
+	if (!el) die("Memory error");
 
 	/* copy the description over */
 	el->description = strdup(description);
+	if (!el->description) die("Memory error");
 
 	/* initialize it with wathever init we were given */
 	if (!el->init(el)) {
