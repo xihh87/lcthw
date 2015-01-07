@@ -6,9 +6,9 @@ struct Monster {
 	int hit_points;
 };
 
-typedef struct Monster Monster;
+Object MonsterProto;
 
-Object MapProto;
+typedef struct Monster Monster;
 
 void *Room_move(void *self, Direction direction);
 int Room_attack(void *self, int damage);
@@ -32,7 +32,6 @@ Object RoomProto;
 
 void *Map_move(void *self, Direction direction);
 int Map_attack(void *self, int damage);
-int Map_init(void *self);
 
 struct Map {
 	Object proto;
@@ -41,7 +40,5 @@ struct Map {
 };
 
 typedef struct Map Map;
-
-Object MapProto;
 
 int process_input(Map *game);

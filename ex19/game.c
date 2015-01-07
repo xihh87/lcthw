@@ -76,8 +76,26 @@ int Room_attack(void *self, int damage)
 	}
 }
 
+void Room_destroy(void *self)
+{
+	Room *room = self;
+	if (room) {
+		Object *obj = &room->proto;
+		if (obj) Object_destroy(obj);
+
+		if (room->bad_guy) room->bad_guy->_(destroy)(room->bad_guy);
+		if (room->north) room->north->_(destroy)(room->north);
+		if (room->south) room->south->_(destroy)(room->south);
+		if (room->east) room->east->_(destroy)(room->east);
+		if (room->west) room->west->_(destroy)(room->west);
+
+		free(room);
+	}
+}
+
 Object RoomProto = {
 	.move = Room_move,
+	.destroy = Room_destroy,
 	.attack = Room_attack,
 };
 
@@ -105,42 +123,6 @@ int Map_attack(void *self, int damage)
 
 	return location->_(attack)(location, damage);
 }
-
-int Map_init(void *self)
-{
-	Map *map = self;
-	
-	// Make some rooms fo a small map
-	Room *hall = NEW(Room, "The great Hall");
-	Room *throne = NEW(Room, "The throne room");
-	Room *arena = NEW(Room, "The arena, with the minotaur");
-	Room *kitchen = NEW(Room, "Kitchen, you have the knife now");
-
-	// put the bad guy in the arena
-	arena->bad_guy = NEW(Monster, "The evil minotaur");
-
-	// setup the map rooms
-	hall->north = throne;
-
-	throne->west = arena;
-	throne->east = kitchen;
-	throne->south = hall;
-
-	arena->east = throne;
-	kitchen->west = throne;
-
-	// start the map and the character off in the hall
-	map->start = hall;
-	map->location = hall;
-
-	return 1;
-}
-
-Object MapProto = {
-	.init = Map_init,
-	.move = Map_move,
-	.attack = Map_attack,
-};
 
 int process_input(Map *game)
 {
