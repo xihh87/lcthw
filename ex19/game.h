@@ -32,6 +32,7 @@ Object RoomProto;
 
 void *Map_move(void *self, Direction direction);
 int Map_attack(void *self, int damage);
+void Map_destroy(void *self);
 
 struct Map {
 	Object proto;

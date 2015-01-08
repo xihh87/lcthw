@@ -124,6 +124,18 @@ int Map_attack(void *self, int damage)
 	return location->_(attack)(location, damage);
 }
 
+void Map_destroy(void *self)
+{
+	Map *map = self;
+	if (map) {
+		Object *obj = &map->proto;
+		if (obj) Object_destroy(obj);
+		
+		Room *room = map->start;
+		if(room) room->_(destroy)(room);
+	}
+}
+
 int process_input(Map *game)
 {
 	printf("\n> ");
