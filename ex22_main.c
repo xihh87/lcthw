@@ -5,6 +5,7 @@ const char *MY_NAME = "Zed A. Shaw";
 
 void scope_demo(int count)
 {
+	int static c = 0;
 	log_info("count is: %d", count);
 
 	if (count > 10) {
@@ -18,6 +19,10 @@ void scope_demo(int count)
 	count = 3000;
 
 	log_info("count after assign: %d", count);
+
+	c++;
+	log_info("%d times called", c);
+	scope_demo(count);
 }
 
 int main(int argc, char *argv[])
