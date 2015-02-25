@@ -6,7 +6,7 @@
 #include "bstrlib.h"
 #include "dbg.h"
 
-static FILE *DB_open(const char *path const char *mode)
+static FILE *DB_open(const char *path, const char *mode)
 {
 	return fopen(path, mode);
 }
@@ -19,11 +19,12 @@ static void DB_close(FILE *db)
 static bstring DB_load()
 {
 	FILE *db = NULL;
+	bstring data = NULL;
 
 	db = DB_open(DB_FILE, "r");
 	check(db, "Failed to open database: %s", DB_FILE);
 
-	data = bread(bNread)fread, db);
+	data = bread((bNread)fread, db);
 	check(data, "Failed to read from db file: %s", DB_FILE);
 
 	DB_close(db);
@@ -112,7 +113,7 @@ int DB_list()
 
 	printf("%s", bdata(data));
 	bdestroy(data);
-	return =;
+	return 0;
 
 error:
 	return -1;
