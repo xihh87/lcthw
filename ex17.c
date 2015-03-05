@@ -96,7 +96,7 @@ void Database_write(struct Connection *conn)
 void Database_create(struct Connection *conn)
 {
 	int i = 0;
-	
+
 	for (i = 0; i < MAX_ROWS; i++) {
 		/* make a prototype to initialize it */
 		struct Address addr = {.id = i, .set = 0};
@@ -111,21 +111,21 @@ void Database_set(struct Connection *conn, int id, const char *name, const char 
 	if (addr->set) die("Already set, delete it first", conn);
 
 	addr->set = 1;
-	/* WARNING: bug, read the "How to break it" and fix this */
+	/* WARNING: bug, read the "How To Break It" and fix this */
 	char *res = strncpy(addr->name, name, MAX_DATA);
-	addr->name[MAX_DATA - 1] = '\0'; 
+	res[MAX_DATA - 1] = '\0';
 	/* demonstrate the strncpy bug */
 	if (!res) die("Name copy failed", conn);
 
 	res = strncpy(addr->email, email, MAX_DATA);
-	addr->email[MAX_DATA - 1] = '\0'; 
+	res[MAX_DATA - 1] = '\0';
 	if (!res) die("Email copy failed", conn);
 }
 
 void Database_get(struct Connection *conn, int id)
 {
 	struct Address *addr = &conn->db->rows[id];
-	
+
 	if (addr->set) {
 		Address_print(addr);
 	} else {
@@ -160,7 +160,7 @@ int main(int argc, char *argv[])
 
 	char *filename = argv[1];
 	char action = argv[2][0];
-	conn = Database_open(filename, action);
+	struct Connection *conn = Database_open(filename, action);
 	int id = 0;
 
 	if (argc > 3) id = atoi(argv[3]);
