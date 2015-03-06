@@ -60,10 +60,12 @@ int main(int argc, char *argv[])
 	rc = safercopy(from_len * -1, from, to_len, to);
 	check(rc == -1, "safercopy should fail #1");
 	check(to[to_len - 1] == '\0', "String not terminated.");
+	debug("Result is: '%s':%d", to, to_len);
 
 	rc = safercopy(from_len, from, 0, to);
 	check(rc == -1, "safercopy should fail #2");
 	check(to[to_len - 1] == '\0', "String not terminated.");
+	debug("Result is: '%s':%d", to, to_len);
 
 	return 0;
 

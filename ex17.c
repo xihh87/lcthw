@@ -160,7 +160,7 @@ int main(int argc, char *argv[])
 
 	char *filename = argv[1];
 	char action = argv[2][0];
-	struct Connection *conn = Database_open(filename, action);
+	conn = Database_open(filename, action);
 	int id = 0;
 
 	if (argc > 3) id = atoi(argv[3]);

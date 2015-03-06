@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
 	printf("> ");
 
 	int eyes = -1;
-	rc = fscanf(stdin, "%d", &eyes);
+	rc = scanf("%d", &eyes);
 	check(rc > 0, "You have to enter a number.");
 
 	you.eyes = eyes - 1;
@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
 	printf("Last Name: %s", you.last_name);
 	printf("Age: %d\n", you.age);
 	printf("Eyes: %s\n", EYE_COLOR_NAMES[you.eyes]);
-	printf("Income: %f\n", you.income);
+	printf("Income: %0.2f\n", you.income);
 
 	return 0;
 error:
