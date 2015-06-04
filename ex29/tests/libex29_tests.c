@@ -14,7 +14,7 @@ int check_function(const char *func_to_run, const char *data, int expected)
 	check(rc == expected, "Function %s return %d for data %s", func_to_run, rc, data);
 
 	return 1;
-error
+error:
 	return 0;
 }
 
@@ -43,7 +43,7 @@ char *test_failures()
 char *test_dlclose()
 {
 	int rc = dlclose(lib);
-	mu_asert(rc == 0, "Failed to close lib.");
+	mu_assert(rc == 0, "Failed to close lib.");
 	return NULL;
 }
 
