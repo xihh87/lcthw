@@ -5,7 +5,7 @@
 
 typedef enum EyeColor {
 	BLUE_EYES, GREEN_EYES, BROWN_EYES,
-	BLACK_EYES, OTHER_EYES
+	BLACK_EYES, OTHER_EYES,
 } EyeColor;
 
 const char *EYE_COLOR_NAMES[] = {
@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
 
 	printf("What's your Last Name? ");
 	in = fgets(you.last_name, MAX_DATA - 1, stdin);
-	check(in !=NULL, "Failed to read last name.");
+	check(in != NULL, "Failed to read last name.");
 
 	printf("How old are you? ");
 	int rc = fscanf(stdin, "%d", &you.age);
@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
 	printf("Last Name: %s", you.last_name);
 	printf("Age: %d\n", you.age);
 	printf("Eyes: %s\n", EYE_COLOR_NAMES[you.eyes]);
-	printf("Income: %.2f\n", you.income);
+	printf("Income: %0.2f\n", you.income);
 
 	return 0;
 error:
