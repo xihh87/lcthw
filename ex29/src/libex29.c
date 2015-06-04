@@ -3,7 +3,7 @@
 #include "dbg.h"
 
 
-int print_a_message(const char *msg)
+int print_a_message(const char *msg, const int maxlen)
 {
 	printf("A STRING: %s\n", msg);
 
@@ -11,12 +11,11 @@ int print_a_message(const char *msg)
 }
 
 
-int uppercase(const char *msg)
+int uppercase(const char *msg, const int maxlen)
 {
 	int i = 0;
 
-	// BUG: \0 termination problems
-	for (i = 0; msg[i] != '\0'; i++) {
+	for (i = 0; i < maxlen || msg[i] != '\0'; i++) {
 		printf("%c", toupper(msg[i]));
 	}
 
@@ -25,11 +24,10 @@ int uppercase(const char *msg)
 	return 0;
 }
 
-int lowercase(const char *msg)
+int lowercase(const char *msg, const int maxlen)
 {
 	int i = 0;
-	// BUG: \0 termination problems
-	for (i = 0; msg[i] != '\0'; i++) {
+	for (i = 0; i < maxlen || msg[i] != '\0'; i++) {
 		printf("%c", tolower(msg[i]));
 	}
 
@@ -38,7 +36,7 @@ int lowercase(const char *msg)
 	return 0;
 }
 
-int fail_on_purpose(const char *msg)
+int fail_on_purpose(const char *msg, const int maxlen)
 {
 	return 1;
 }
