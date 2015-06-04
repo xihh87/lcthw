@@ -34,6 +34,7 @@ build:
 tests: CFLAGS += -ldl $(TARGET)
 tests: $(TESTS)
 	sh ./tests/runtests.sh
+	./tests/libex29_tests
 
 valgrind:
 	VALGRIND="valgrind --log-file=/tmp/valgrind-%p.log" $(MAKE)
