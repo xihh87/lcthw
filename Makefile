@@ -1,5 +1,5 @@
 CFLAGS=-Wall	-g
-PROGS=ex1	ex3	ex4	ex6	ex7	ex8	ex9	\
+PROGS=ex01	ex03	ex04	ex06	ex07	ex08	ex09	\
 	ex10	ex11	ex12	ex13	ex14	ex15	ex16	\
 	ex17	ex18	ex20	ex22	ex23	ex24	ex25	ex27
 OBJS=ex22.o
