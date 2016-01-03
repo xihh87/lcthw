@@ -1,0 +1,6 @@
+.git*
+build
+*.[ao]
+*.so
+*_tests
+*.log
