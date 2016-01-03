@@ -6,31 +6,42 @@ List *List_create()
 	return calloc(1, sizeof(List));
 }
 
+#define clear_nodes \
+	if (cur->prev) {\
+		free(cur->prev);\
+	}
+
+#define clear_list \
+	free(list->last);\
+	free(list);
+
+#define clear_value free(cur->value)
+
 void List_destroy(List *list)
 {
 	LIST_FOREACH(list, first, next, cur) {
-		if (cur->prev) {
-			free(cur->prev);
-		}
+		clear_nodes;
 	}
 
-	free(list->last);
-	free(list);
+	clear_list;
 }
-
 
 void List_clear(List *list)
 {
 	LIST_FOREACH(list, first, next, cur) {
-		free(cur->value);
+		clear_value;
 	}
 }
 
-
 void List_clear_destroy(List *list)
 {
-	List_clear(list);
-	List_destroy(list);
+	
+	LIST_FOREACH(list, first, next, cur) {
+		clear_value;
+		clear_nodes;
+	}
+
+	clear_list;
 }
 
 
