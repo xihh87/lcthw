@@ -4,7 +4,8 @@ PROGS=ex01	ex03	ex04	ex06	ex07	ex08	ex09	\
 	ex17	ex18	ex20	ex22	ex23	ex24	ex25	ex27
 OBJS=ex22.o
 
-all:	$(PROGS) ex19/ex19
+all:	$(PROGS)
+	mv $(PROGS) build
 
 test:
 	bash test/ex17.sh
