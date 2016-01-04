@@ -1,53 +1,59 @@
 #include <lcthw/list.h>
 #include <lcthw/dbg.h>
 
+inline ListNode *Node_create()
+{
+	return calloc(1, sizeof(ListNode));
+}
+
+inline void Node_destroy(ListNode *cur)
+{
+	if (cur) { free(cur); }
+}
+
 List *List_create()
 {
 	return calloc(1, sizeof(List));
 }
 
-#define clear_nodes \
-	if (cur->prev) {\
-		free(cur->prev);\
-	}
-
-#define clear_list \
-	free(list->last);\
-	free(list);
-
-#define clear_value free(cur->value)
+inline void Node_clear(ListNode *cur)
+{
+	if (cur->value) { free(cur->value); }
+}
 
 void List_destroy(List *list)
 {
 	LIST_FOREACH(list, first, next, cur) {
-		clear_nodes;
+		Node_destroy(cur->prev);
 	}
 
-	clear_list;
+	Node_destroy(list->last);
+	free(list);
 }
 
 void List_clear(List *list)
 {
 	LIST_FOREACH(list, first, next, cur) {
-		clear_value;
+		Node_clear(cur);
 	}
 }
 
 void List_clear_destroy(List *list)
 {
-	
+
 	LIST_FOREACH(list, first, next, cur) {
-		clear_value;
-		clear_nodes;
+		Node_clear(cur);
+		Node_destroy(cur->prev);
 	}
 
-	clear_list;
+	Node_destroy(list->last);
+	free(list);
 }
 
 
 void List_push(List * list, void *value)
 {
-	ListNode *node = calloc(1, sizeof(ListNode));
+	ListNode *node = Node_create();
 	check_mem(node);
 
 	node->value = value;
@@ -75,7 +81,7 @@ void *List_pop(List *list)
 
 void List_unshift(List *list, void *value)
 {
-	ListNode *node = calloc(1, sizeof(ListNode));
+	ListNode *node = Node_create();
 	check_mem(node);
 
 	node->value = value;
@@ -133,4 +139,32 @@ void *List_remove(List *list, ListNode *node)
 
 error:
 	return result;
+}
+
+void List_extend(List *right, List *left)
+{
+	check(right && left, "One or more input list are NULL.");
+
+	LIST_FOREACH(left, first, next, cur) {
+		List_push(right, cur->value);
+	}
+
+error:
+	return;
+}
+
+List *List_merge(List *right, List *left)
+{
+	check(right && left, "One or more input list are NULL.");
+
+	List *new = List_create();
+	check(new, "Could not create new list.");
+
+	List_extend(new, right);
+	List_extend(new, left);
+
+	check(new->count == right->count + left->count, "Failed to merge lists.");
+	return new;
+error:
+	return NULL;
 }
