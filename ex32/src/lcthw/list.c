@@ -1,24 +1,9 @@
 #include <lcthw/list.h>
 #include <lcthw/dbg.h>
 
-inline ListNode *Node_create()
-{
-	return calloc(1, sizeof(ListNode));
-}
-
-inline void Node_destroy(ListNode *cur)
-{
-	if (cur) { free(cur); }
-}
-
 List *List_create()
 {
 	return calloc(1, sizeof(List));
-}
-
-inline void Node_clear(ListNode *cur)
-{
-	if (cur->value) { free(cur->value); }
 }
 
 void List_destroy(List *list)

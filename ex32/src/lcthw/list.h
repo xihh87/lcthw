@@ -56,7 +56,7 @@ void *List_remove(List *list, ListNode *node);
 /* Return a new list containing the elements from `right` and `left`. */
 List *List_merge(List *right, List *left);
 
-/* Iterates through a list `L`,
+/* Iterate through a list `L`,
  * starting from `L->S`,
  * and moving in `M` direction
  * storing the value on `V` variable.
@@ -64,5 +64,32 @@ List *List_merge(List *right, List *left);
 #define LIST_FOREACH(L, S, M, V) ListNode *_node = NULL;\
 	ListNode *V = NULL;\
 	for(V = _node = L->S; _node != NULL; V = _node = _node->M)
+
+/* Return a new node */
+static inline ListNode *Node_create()
+{
+        return calloc(1, sizeof(ListNode));
+}
+
+/* Destroy a node */
+static inline void Node_destroy(ListNode *cur)
+{
+	if (cur) { free(cur); }
+}
+
+/* Destroy the value holded by the node */
+static inline void Node_clear(ListNode *cur)
+{
+	if (cur->value) { free(cur->value); }
+}
+
+/* Return current node's value */
+#define Node_value(N) (N)->value
+
+/* Return next node */
+#define Node_next(N) (N)->next
+
+/* Return prev node */
+#define Node_prev(N) (N)->prev
 
 #endif
