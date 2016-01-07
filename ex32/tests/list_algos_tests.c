@@ -1,8 +1,9 @@
 #include "minunit.h"
-#include <lcthw/list.h>
-#include <lcthw/list_algos.h>
 #include <assert.h>
 #include <string.h>
+
+#include <lcthw/list.h>
+#include <lcthw/list_algos.h>
 
 char *values[] = {"XXXX", "1234", "abcd", "xjvef", "NDSS"};
 #define NUM_VALUES 5
@@ -34,7 +35,7 @@ int is_sorted(List *words)
 char *test_bubble_sort()
 {
 	List *words = create_words();
-	
+
 	/* should work on a list that needs sorting */
 	int rc = List_bubble_sort(words, (List_compare)strcmp);
 	mu_assert(rc == 0, "Bubble sort failed.");
@@ -56,10 +57,10 @@ char *test_merge_sort()
 
 	/* should work on a list that needs sorting */
 	List *res = List_merge_sort(words, (List_compare)strcmp);
-	mu_assert(is_sorted(res), "Words are not sorted after merge sort.");
+	mu_assert(res && is_sorted(res), "Words are not sorted after merge sort.");
 
 	List *res2 = List_merge_sort(res, (List_compare)strcmp);
-	mu_assert(is_sorted(res), "Should still be sorted after merge sort.");
+	mu_assert(res2 && is_sorted(res), "Should still be sorted after merge sort.");
 	List_destroy(res2);
 	List_destroy(res);
 
