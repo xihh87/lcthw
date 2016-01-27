@@ -51,29 +51,55 @@ error:
 };
 
 List *
+merge_sorted(List *left, List *right, List_compare cmp)
+{
+
+	check(left && List_count(left) >= 0,  "Invalid left list.");
+	check(right && List_count(right) >= 0, "Invalid right list.");
+
+	List *merged = List_create();
+	check(merged, "Could not create list");
+
+	int total = List_count(left) + List_count(right);
+
+	void *l = List_shift(left);
+	void *r = List_shift(right);
+
+	for (int i = 0; i < total; i++) {
+		if(l && r) {
+			if (cmp(l, r) <= 0) {
+				debug("%s is less than or equal %s.", (const char *)l, (const char *)r);
+				List_push(merged, l);
+				l = List_shift(left);
+			} else {
+				debug("%s is more than %s.", (const char *)l, (const char *)r);
+				List_push(merged, r);
+				r = List_shift(right);
+			}
+		} else if (l) {
+			debug("only elements on left remain.");
+			List_push(merged, l);
+			l = List_shift(left);
+		} else if (r) {
+			debug("only elements on right remain.");
+			List_push(merged, r);
+			l = List_shift(right);
+		}
+	}
+
+	check(List_count(merged) == total, "Merged list have the wrong number of elements");
+	return merged;
+error:
+	List_clear_destroy(merged);
+	return NULL;
+}
+
+List *
 List_merge_sort(List *list, List_compare cmp)
 {
-	if( list && cmp ) { goto error; } ;
-/* function merge(left, right) */
-/*     var result := empty list */
-/*  */
-/*     while left is not empty and right is not empty do */
-/*         if first(left) ≤ first(right) then */
-/*             append first(left) to result */
-/*             left := rest(left) */
-/*         else */
-/*             append first(right) to result */
-/*             right := rest(right) */
-/*  */
-/*     // Either left or right may have elements left; consume them. */
-/*     // (Only one of the following loops will actually be entered.) */
-/*     while left is not empty do */
-/*         append first(left) to result */
-/*         left := rest(left) */
-/*     while right is not empty do */
-/*         append first(right) to result */
-/*         right := rest(right) */
-/*     return result */
+	check(list, "Invalid list.");
+	check(cmp, "Invalid compare function.");
+
 error:
 	return NULL;
 };
