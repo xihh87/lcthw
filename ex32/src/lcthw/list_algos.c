@@ -54,8 +54,8 @@ List *
 merge_sorted(List *left, List *right, List_compare cmp)
 {
 
-	check(left && List_count(left) >= 0,  "Invalid left list.");
-	check(right && List_count(right) >= 0, "Invalid right list.");
+	check(left && List_count(left) > 0,  "Invalid left list.");
+	check(right && List_count(right) > 0, "Invalid right list.");
 
 	List *merged = List_create();
 	check(merged, "Could not create list");
@@ -68,20 +68,24 @@ merge_sorted(List *left, List *right, List_compare cmp)
 	for (int i = 0; i < total; i++) {
 		if(l && r) {
 			if (cmp(l, r) <= 0) {
-				debug("%s is less than or equal %s.", (const char *)l, (const char *)r);
+				debug("%s is less than or equal %s, "
+					"adding %s to the list.", (const char *)l, (const char *)r, (const char *)l);
 				List_push(merged, l);
 				l = List_shift(left);
 			} else {
-				debug("%s is more than %s.", (const char *)l, (const char *)r);
+				debug("%s is more than %s, "
+					"adding %s to the list.", (const char *)l, (const char *)r, (const char *)r);
 				List_push(merged, r);
 				r = List_shift(right);
 			}
 		} else if (l) {
-			debug("only elements on left remain.");
+			debug("only elements on left remain, "
+				"Adding %s to the list", (const char *)l);
 			List_push(merged, l);
 			l = List_shift(left);
 		} else if (r) {
-			debug("only elements on right remain.");
+			debug("only elements on right remain, "
+				"Adding %s to the list", (const char *)r);
 			List_push(merged, r);
 			l = List_shift(right);
 		}
@@ -99,6 +103,38 @@ List_merge_sort(List *list, List_compare cmp)
 {
 	check(list, "Invalid list.");
 	check(cmp, "Invalid compare function.");
+
+	List *right = List_create();
+	check_mem(right);
+	List *left = List_create();
+	check_mem(left);
+
+	int i = 0;
+	if (List_count(list) > 1) {
+		int n = List_count(list);
+		for (i=0; i < (n / 2); i++) {
+			debug("Element %d / %d in left list.", i, n);
+			List_push(left, List_shift(list));
+		}
+		for (; i < n ; i++) {
+			debug("Element %d / %d in right list.", i, n);			
+			List_push(right, List_shift(list));
+		}
+
+		debug("Will sort left list.");
+		left = List_merge_sort(left, cmp);
+		debug("left list is sorted.");
+		debug("Will sort right list.");
+		right = List_merge_sort(right, cmp);
+		debug("right list is sorted.");
+
+		list = merge_sorted(left, right, cmp);
+
+	} else if(List_count(list) == 0) {
+		sentinel("Invalid list: no elements");
+	}
+
+	return list;
 
 error:
 	return NULL;
