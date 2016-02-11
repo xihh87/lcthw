@@ -22,28 +22,28 @@ int
 List_bubble_sort(List *list, List_compare cmp)
 {
 	int n = List_count(list);
+	check(n >= 0, "List contains no elements");
 	debug("List contains %d elements", n);
-	int swapped = 1;
-	/* repeat until not swapped */
-	for ( ; n > 0 && swapped ; n--) {
-		swapped = 0;
+	int sorted = 0;
+	/* repeat until sorted */
+	for ( ; n > 0 && !sorted ; n--) {
+		sorted = 1;
 		LIST_FOREACH(list, first, next, cur) {
 			check(cur, "List contains a NULL Node.");
 			ListNode *next = Node_next(cur);
 			/* if this pair is out of order */
 			if ( next && cmp(Node_value(cur), Node_value(next)) > 0) {
 				debug("%s is greater than %s", (char *)Node_value(cur), (char *)Node_value(next));
-				/* swap them and remember something changed */
 				swap_nodes(cur, next);
-				swapped = 1;
+				sorted = 0;
 			} else if (! next) {
 				debug("The list is over.");
 			} else {
 				debug("%s is less than %s", (char *)Node_value(cur), (char *)Node_value(next));
 			}
 		}
-		debug("We have %d rounds to go, and we did%s swapped last round", n, swapped ? "" : "n't");
-		debug("We will%sgo to the next cycle.", (n > 0 && swapped) ? " " : " not ");
+		debug("We have %d rounds to go, and list is%ssorted", n, sorted ? " " : " not ");
+		debug("We will%sgo to the next cycle.", (n > 0 && !sorted) ? " " : " not ");
 	}
 	return 0;
 error:
@@ -54,11 +54,11 @@ List *
 merge_sorted(List *left, List *right, List_compare cmp)
 {
 
-	check(left && List_count(left) > 0,  "Invalid left list.");
-	check(right && List_count(right) > 0, "Invalid right list.");
-
 	List *merged = List_create();
 	check(merged, "Could not create list");
+
+	check(left && List_count(left) > 0,  "Invalid left list.");
+	check(right && List_count(right) > 0, "Invalid right list.");
 
 	int total = List_count(left) + List_count(right);
 
@@ -80,12 +80,12 @@ merge_sorted(List *left, List *right, List_compare cmp)
 			}
 		} else if (l) {
 			debug("only elements on left remain, "
-				"Adding %s to the list", (const char *)l);
+				"adding %s to the list", (const char *)l);
 			List_push(merged, l);
 			l = List_shift(left);
 		} else if (r) {
 			debug("only elements on right remain, "
-				"Adding %s to the list", (const char *)r);
+				"adding %s to the list", (const char *)r);
 			List_push(merged, r);
 			l = List_shift(right);
 		}
@@ -123,10 +123,10 @@ List_merge_sort(List *list, List_compare cmp)
 
 		debug("Will sort left list.");
 		left = List_merge_sort(left, cmp);
-		debug("left list is sorted.");
+		debug("Left list is sorted.");
 		debug("Will sort right list.");
 		right = List_merge_sort(right, cmp);
-		debug("right list is sorted.");
+		debug("Right list is sorted.");
 
 		list = merge_sorted(left, right, cmp);
 
