@@ -65,7 +65,8 @@ merge_sorted(List *left, List *right, List_compare cmp)
 	void *l = List_shift(left);
 	void *r = List_shift(right);
 
-	for (int i = 0; i < total; i++) {
+	int i = 0;
+	for (i = 0; i < total; i++) {
 		if(l && r) {
 			if (cmp(l, r) <= 0) {
 				debug("%s is less than or equal %s, "
@@ -117,7 +118,7 @@ List_merge_sort(List *list, List_compare cmp)
 			List_push(left, List_shift(list));
 		}
 		for (; i < n ; i++) {
-			debug("Element %d / %d in right list.", i, n);			
+			debug("Element %d / %d in right list.", i, n);
 			List_push(right, List_shift(list));
 		}
 
