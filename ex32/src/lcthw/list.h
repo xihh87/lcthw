@@ -83,6 +83,16 @@ static inline void Node_clear(ListNode *cur)
 	if (cur->value) { free(cur->value); }
 }
 
+/* Join the left and right lists into the left list, destroy the right list
+ */
+List *
+List_join(List *left, List *right);
+
+/* Split the list by the nth node,
+ return the second part of the list */
+List *
+List_split(List *list, int n);
+
 /* Return current node's value */
 #define Node_value(N) (N)->value
 

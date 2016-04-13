@@ -126,9 +126,9 @@ error:
 	return result;
 }
 
-void List_extend(List *right, List *left)
+void List_extend(List *left, List *right)
 {
-	check(right && left, "One or more input list are NULL.");
+	check(left && right, "One or more input list are NULL.");
 
 	LIST_FOREACH(left, first, next, cur) {
 		List_push(right, cur->value);
@@ -138,17 +138,60 @@ error:
 	return;
 }
 
-List *List_merge(List *right, List *left)
+List *List_merge(List *left, List *right)
 {
 	check(right && left, "One or more input list are NULL.");
 
 	List *new = List_create();
 	check(new, "Could not create new list.");
 
-	List_extend(new, right);
 	List_extend(new, left);
+	List_extend(new, right);
 
 	check(new->count == right->count + left->count, "Failed to merge lists.");
+	return new;
+error:
+	return NULL;
+}
+
+List *
+List_join(List *left, List *right)
+{
+	int total = List_count(left) + List_count(right);
+	List_count(left) = total;
+
+	/* Join the last and first nodes from both lists */
+	left->last->next = right->first;
+	right->first->prev = left->last;
+
+	/* Set the last node */
+	left->last = right->last;
+
+	free(right);
+	return left;
+
+}
+
+List *
+List_split(List *list, int n)
+{
+	check(n < List_count(list), "Can't split list past it's length.");
+
+	List *new = List_create();
+	check(new, "Unable to create new List.");
+
+	new->last = list->last;
+	new->count = list->count - n;
+	list->count = n;
+
+	LIST_FOREACH(list, first, next, cur) {
+		if (n == 0) {
+			new->first = cur->next;
+			new->first->prev = NULL;
+			cur->next = NULL;
+		}
+		n--;
+	}
 	return new;
 error:
 	return NULL;
