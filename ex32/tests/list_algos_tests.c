@@ -7,9 +7,9 @@
 #include <lcthw/list_algos.h>
 
 char *values[] = {"XXXX", "1234", "abcd", "xjvef", "NDSS"};
-#define ITER 50000
+#define ITER 5000
 #define NUM_VALUES 5
-#define REP 50
+#define REP 10
 
 List *create_words()
 {
