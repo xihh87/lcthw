@@ -56,6 +56,7 @@ error:
 static inline void *DArray_remove(DArray *array, int i)
 {
 	void *el = array->contents[i];
+
 	array->contents[i] = NULL;
 
 	return el;
