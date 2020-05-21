@@ -4,3 +4,5 @@ build
 *.so
 *_tests
 *.log
+ex*
+!ex*.c
